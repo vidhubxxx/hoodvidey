@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VideoHub</title>
+
+<link rel="icon" type="image/png" href="/images/favicon.png">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f3f3f3;
+    color:#111;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 60px;
+}
+
+.logo{
+    color:#0f172a;
+    font-size:18px;
+    font-weight:bold;
+    user-select:none;
+    cursor:default;
+}
+
+.latest-btn{
+    background:#0f172a;
+    color:#fff;
+    padding:12px 24px;
+    border-radius:999px;
+    font-size:14px;
+    user-select:none;
+    cursor:default;
+}
+
+.container{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.video-wrapper{
+    position:relative;
+    width:720px;
+    max-width:100%;
+    background:#000;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 20px rgba(0,0,0,.15);
+}
+
+video{
+    width:100%;
+    display:block;
+    background:#000;
+}
+
+.video-overlay{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    z-index:10;
+}
+
+.play-button{
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    background:rgba(0,0,0,.75);
+    color:white;
+    font-size:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.25s;
+    backdrop-filter:blur(4px);
+}
+
+.play-button:hover{
+    transform:scale(1.1);
+}
+
+.message{
+    margin-top:20px;
+    text-align:center;
+    color:#666;
+    font-size:14px;
+}
+
+footer{
+    text-align:center;
+    padding:24px;
+    font-size:13px;
+    color:#666;
+}
+
+@media(max-width:768px){
+
+    header{
+        padding:14px 16px;
+    }
+
+    .play-button{
+        width:80px;
+        height:80px;
+        font-size:38px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        VideoHub
+    </div>
+
+    <div class="latest-btn">
+        <strong>Latest</strong>
+    </div>
+
+</header>
+
+<main class="container">
+
+    <div class="video-wrapper">
+
+        <div class="video-overlay" id="playOverlay">
+            <div class="play-button">▶</div>
+        </div>
+
+        <video
+            id="video"
+            controls
+            controlsList="nodownload noplaybackrate"
+            disablePictureInPicture
+            preload="metadata"
+            poster="https://img.magnific.com/premium-vector/neon-sign-thanks-watching-with-brick-wall-background-vector_118419-4424.jpg">
+
+            <source id="videoSource" src="" type="video/mp4">
+
+            Your browser does not support HTML5 video.
+
+        </video>
+
+    </div>
+
+    <div class="message" id="status">
+        Loading video...
+    </div>
+
+</main>
+
+<footer>
+    Copyright © 2026 <strong>VideoHub</strong>
+</footer>
+
+<script>
+
+// Example:
+// watch.html?id=yVNrLzoz1
+
+const params = new URLSearchParams(window.location.search);
+const videyId = params.get("id");
+
+const video = document.getElementById("video");
+const source = document.getElementById("videoSource");
+const status = document.getElementById("status");
+const overlay = document.getElementById("playOverlay");
+
+if(videyId){
+
+    source.src = `https://cdn.videy.co/${videyId}.mp4`;
+
+    video.load();
+
+    status.style.display = "none";
+
+}else{
+
+    status.innerHTML =
+        "No video ID detected.<br><br>Example:<br>?id=yVNrLzoz1";
+
+}
+
+overlay.addEventListener("click", () => {
+
+    video.play();
+
+    overlay.style.display = "none";
+
+});
+
+video.addEventListener("play", () => {
+
+    overlay.style.display = "none";
+
+});
+
+video.addEventListener("pause", () => {
+
+    if(!video.ended){
+        overlay.style.display = "flex";
+    }
+
+});
+
+video.addEventListener("ended", () => {
+
+    overlay.style.display = "flex";
+
+});
+
+document.addEventListener("contextmenu", e => {
+    e.preventDefault();
+});
+
+video.addEventListener("dragstart", e => {
+    e.preventDefault();
+});
+
+</script>
+
+<!-- Histats.com  START  (aync)-->
+<script type="text/javascript">var _Hasync= _Hasync|| [];
+_Hasync.push(['Histats.start', '1,5028759,4,0,0,0,00010000']);
+_Hasync.push(['Histats.fasi', '1']);
+_Hasync.push(['Histats.track_hits', '']);
+(function() {
+var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+hs.src = ('//s10.histats.com/js15_as.js');
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+})();</script>
+<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5028759&101" alt="" border="0"></a></noscript>
+<!-- Histats.com  END  -->
+    
+</body>
+</html>
